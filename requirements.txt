@@ -1,0 +1,4 @@
+pyannote.audio
+librosa
+matplotlib
+ffmpeg-python
