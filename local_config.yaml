@@ -1,0 +1,18 @@
+pipeline:
+  name: pyannote.audio.pipelines.SpeakerDiarization
+  params:
+    clustering: AgglomerativeClustering
+    embedding: speechbrain/spkrec-ecapa-voxceleb
+    embedding_batch_size: 32
+    embedding_exclude_overlap: true
+    segmentation: pyannote/segmentation@2022.07
+    segmentation_batch_size: 32
+
+params:
+  clustering:
+    method: centroid
+    min_cluster_size: 10
+    threshold: 0.65
+  segmentation:
+    min_duration_off: 0.3
+    threshold: 0.4
