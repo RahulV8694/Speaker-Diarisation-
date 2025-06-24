@@ -1,5 +1,6 @@
 import os
 from utils.audio_extractor import extract_audio
+from utils.audio_enhancer import enhance_audio  # <-- NEW IMPORT
 from utils.diarizer import run_diarization, print_segments, plot_diarization
 
 # === USER INPUT ===
@@ -11,14 +12,17 @@ if __name__ == "__main__":
         print(f"Video not found: {VIDEO_PATH}")
         exit(1)
 
-    print("🔁 Extracting audio...")
+    print(" Extracting audio...")
     audio_path = extract_audio(VIDEO_PATH)
 
-    print("🧠 Running speaker diarization...")
-    diarization = run_diarization(audio_path, HUGGINGFACE_TOKEN)
+    print("Enhancing audio quality...")
+    enhanced_audio_path = enhance_audio(audio_path)  
 
-    print("\n🗣️ Speaker Segments:")
+    print("Running speaker diarization...")
+    diarization = run_diarization(enhanced_audio_path, HUGGINGFACE_TOKEN)
+
+    print("\n Speaker Segments:")
     print_segments(diarization)
 
-    print("📊 Plotting timeline...")
+    print(" Plotting timeline...")
     plot_diarization(diarization)
