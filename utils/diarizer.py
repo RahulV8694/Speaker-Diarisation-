@@ -1,9 +1,30 @@
 from pyannote.audio import Pipeline
 import matplotlib.pyplot as plt
 import os
+import torch
 
 def run_diarization(audio_path: str, hf_token: str):
-    pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization", use_auth_token=hf_token)
+    # Check for GPU availability and set device
+    if torch.backends.mps.is_available():
+        device = torch.device("mps")
+        print("Using MPS (Metal Performance Shaders) for GPU acceleration")
+    elif torch.cuda.is_available():
+        device = torch.device("cuda")
+        print("Using CUDA for GPU acceleration")
+    else:
+        device = torch.device("cpu")
+        print("Using CPU (no GPU acceleration available)")
+    
+    # Load pipeline with GPU acceleration
+    pipeline = Pipeline.from_pretrained(
+        "pyannote/speaker-diarization", 
+        use_auth_token=hf_token
+    )
+    
+    # Move pipeline to GPU if available
+    pipeline.to(device)
+    
+    print(f"Processing audio with device: {device}")
     diarization = pipeline(audio_path)
     return diarization
 
