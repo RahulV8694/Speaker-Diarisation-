@@ -50,6 +50,11 @@ def print_segments(diarization):
     for turn, _, speaker in diarization.itertracks(yield_label=True):
         print(f"{turn.start:.2f}s --> {turn.end:.2f}s : {speaker}")
 
+def write_segments_to_file(diarization, filepath):
+    with open(filepath, "w") as f:
+        for turn, _, speaker in diarization.itertracks(yield_label=True):
+            f.write(f"{turn.start:.2f} to {turn.end:.2f} : {speaker}\n")
+
 def plot_diarization(diarization, output_path="outputs/diarization_plot.png"):
 
     fig, ax = plt.subplots(figsize=(15, 6))
